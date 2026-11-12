@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Ostatnia Prosta{% endblock %}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            background: #263746;
+            color: white;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin-top: 0;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        h2, h3 {
+            color: #263746;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #e9eef2;
+        }
+
+        input, select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button, .button {
+            display: inline-block;
+            background: #263746;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        button:hover, .button:hover {
+            background: #405b70;
+        }
+
+        .danger {
+            background: #b83232;
+        }
+
+        .danger:hover {
+            background: #8d2222;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        .kaplica {
+            padding: 10px 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>Ostatnia Prosta</h1>
+
+    <nav>
+        <a href="{{ url_for('rezerwacje.lista_kaplic') }}">
+            Lista kaplic
+        </a>
+
+        <a href="{{ url_for('rezerwacje.nowa_rezerwacja') }}">
+            Nowa rezerwacja
+        </a>
+
+        <a href="{{ url_for('rezerwacje.moje_rezerwacje_widok') }}">
+            Moje rezerwacje
+        </a>
+    </nav>
+
+</header>
+
+<main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% for category, message in messages %}
+
+            <div class="{{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+<footer>
+    Ostatnia Prosta – System zarządzania usługami pogrzebowymi
+</footer>
+
+</body>
+</html>
