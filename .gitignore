@@ -1,0 +1,25 @@
+# Środowisko wirtualne
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Baza danych SQLite
+instance/*.db
+instance/*.sqlite
+instance/*.sqlite3
+
+# Pliki konfiguracyjne i sekrety
+.env
+
+# Edytory
+.vscode/
+.idea/
+
+# System
+.DS_Store
+Thumbs.db
