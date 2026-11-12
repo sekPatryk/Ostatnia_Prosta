@@ -1,0 +1,97 @@
+
+{% extends "rezerwacje/baza.html" %}
+
+{% block title %}Lista kaplic – Ostatnia Prosta{% endblock %}
+
+{% block content %}
+
+<h2>W01 – Lista kaplic i dostępność terminów</h2>
+
+<form method="GET"
+      action="{{ url_for('rezerwacje.lista_kaplic') }}">
+
+    <label for="data">Wybierz datę:</label>
+
+    <input
+        type="date"
+        id="data"
+        name="data"
+        value="{{ wybrana_data }}"
+        required
+    >
+
+    <button type="submit">
+        Sprawdź dostępność
+    </button>
+
+</form>
+
+<h3>Kaplice – {{ wybrana_data }}</h3>
+
+{% for kaplica in kaplice %}
+
+    <section class="kaplica">
+
+        <h3>{{ kaplica.nazwa }}</h3>
+
+        <p>{{ kaplica.opis }}</p>
+
+        <p>
+            Pojemność: {{ kaplica.pojemnosc }} osób
+        </p>
+
+        <h4>Zajęte terminy:</h4>
+
+        {% set zajete = rezerwacje
+            | selectattr("id_sali", "equalto", kaplica.id_sali)
+            | list
+        %}
+
+        {% if zajete %}
+
+            <table>
+
+                <tr>
+                    <th>Od</th>
+                    <th>Do</th>
+                    <th>Status</th>
+                </tr>
+
+                {% for r in zajete %}
+
+                    <tr>
+                        <td>{{ r.godzina_od }}</td>
+                        <td>{{ r.godzina_do }}</td>
+                        <td class="status">Zajęta</td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+
+        {% else %}
+
+            <p>Brak rezerwacji – kaplica jest wolna.</p>
+
+        {% endif %}
+
+        <a class="button"
+           href="{{ url_for(
+               'rezerwacje.nowa_rezerwacja',
+               id_sali=kaplica.id_sali,
+               data=wybrana_data
+           ) }}">
+            Zarezerwuj termin
+        </a>
+
+    </section>
+
+    <hr>
+
+{% else %}
+
+    <p>Brak aktywnych kaplic w systemie.</p>
+
+{% endfor %}
+
+{% endblock %}

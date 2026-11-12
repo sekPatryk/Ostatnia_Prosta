@@ -1,0 +1,96 @@
+
+{% extends "rezerwacje/baza.html" %}
+
+{% block title %}Moje rezerwacje – Ostatnia Prosta{% endblock %}
+
+{% block content %}
+
+<h2>W03 – Moje rezerwacje</h2>
+
+<p>
+    Użytkownik demonstracyjny: Jan Kowalski (ID: 1)
+</p>
+
+{% if rezerwacje %}
+
+    <table>
+
+        <tr>
+            <th>Kaplica</th>
+            <th>Data</th>
+            <th>Od</th>
+            <th>Do</th>
+            <th>Status</th>
+            <th>Akcje</th>
+        </tr>
+
+        {% for r in rezerwacje %}
+
+            <tr>
+
+                <td>{{ r.nazwa_sali }}</td>
+
+                <td>{{ r.data_rezerwacji }}</td>
+
+                <td>{{ r.godzina_od }}</td>
+
+                <td>{{ r.godzina_do }}</td>
+
+                <td class="status">
+
+                    {% if r.status == 'aktywna' %}
+                        Aktywna
+                    {% else %}
+                        Anulowana
+                    {% endif %}
+
+                </td>
+
+                <td>
+
+                    {% if r.status == 'aktywna' %}
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'rezerwacje.anuluj',
+                                id_rezerwacji=r.id_rezerwacji
+                            ) }}"
+                            onsubmit="return confirm(
+                                'Czy na pewno anulować rezerwację?'
+                            );"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                value="{{ csrf_token() }}"
+                            >
+
+                            <button type="submit" class="danger">
+                                Anuluj
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <span>Brak dostępnych akcji</span>
+
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% else %}
+
+    <p>Nie posiadasz jeszcze żadnych rezerwacji.</p>
+
+{% endif %}
+
+{% endblock %}

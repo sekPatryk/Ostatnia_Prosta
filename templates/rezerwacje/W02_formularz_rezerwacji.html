@@ -1,0 +1,75 @@
+
+{% extends "rezerwacje/baza.html" %}
+
+{% block title %}Nowa rezerwacja – Ostatnia Prosta{% endblock %}
+
+{% block content %}
+
+<h2>W02 – Formularz rezerwacji</h2>
+
+<form method="POST"
+      action="{{ url_for('rezerwacje.nowa_rezerwacja') }}">
+
+    <input type="hidden" name="csrf_token"
+           value="{{ csrf_token() }}">
+
+    <label for="id_sali">Wybierz kaplicę:</label>
+
+    <select name="id_sali" id="id_sali" required>
+
+        <option value="">-- Wybierz kaplicę --</option>
+
+        {% for kaplica in kaplice %}
+
+            <option
+                value="{{ kaplica.id_sali }}"
+                {% if dane.id_sali|string == kaplica.id_sali|string %}
+                    selected
+                {% endif %}
+            >
+                {{ kaplica.nazwa }}
+                ({{ kaplica.pojemnosc }} osób)
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <label for="data_rezerwacji">Data rezerwacji:</label>
+
+    <input
+        type="date"
+        id="data_rezerwacji"
+        name="data_rezerwacji"
+        min="{{ today }}"
+        value="{{ dane.data_rezerwacji }}"
+        required
+    >
+
+    <label for="godzina_od">Godzina rozpoczęcia:</label>
+
+    <input
+        type="time"
+        id="godzina_od"
+        name="godzina_od"
+        value="{{ dane.godzina_od }}"
+        required
+    >
+
+    <label for="godzina_do">Godzina zakończenia:</label>
+
+    <input
+        type="time"
+        id="godzina_do"
+        name="godzina_do"
+        value="{{ dane.godzina_do }}"
+        required
+    >
+
+    <button type="submit">
+        Zapisz rezerwację
+    </button>
+
+</form>
+
+{% endblock %}
